@@ -4,12 +4,13 @@ import Button from "../../Common/Button";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { setUser } from "../../../slices/userSlice";
+import { setUser, clearUser } from "../../../slices/userSlice"; // Import your actions
+import { selectUser } from "../../../slices/userSlice"; // Import your selectors
 import { toast } from "react-toastify";
 import ResetPassword from "../ResetPassword";
-
+import { clearPodcasts } from "../../../slices/podcastSlice";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -17,24 +18,23 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  
+  const currentUser = useSelector(selectUser);
 
-  const handleLogin = async() => {
-    console.log("Handling Login");
+  const handleLogin = async () => {
     setLoading(true);
     if (email && password) {
       try {
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+
+        if (currentUser) {
+          // Clear the previous user's data when a new user logs in
+          dispatch(clearUser());
+          dispatch(clearPodcasts()); // Clear podcast data
+        }
 
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const userData = userDoc.data();
-        console.log("userData", userData);
 
         dispatch(
           setUser({
@@ -43,22 +43,21 @@ function LoginForm() {
             uid: user.uid,
           })
         );
+
         toast.success("Login Successful!");
         setLoading(false);
         navigate("/profile");
-         // Navigate to the profile page
       } catch (error) {
         console.error("Error signing in:", error);
         setLoading(false);
         toast.error(error.message);
       }
-    } 
-    else {
+    } else {
       toast.error("Make sure email and password are not empty");
       setLoading(false);
     }
+  }
 
-  };
   return (
     <>
       <InputComponent
@@ -76,25 +75,10 @@ function LoginForm() {
         required={true}
       />
 
-      
-
-    
-
-
-
-{/* <Link to="/reset-password" style={{ color: "white" }}>Forgot your password?</Link> */}
-
-
-
-{/* Step 2: Add Link component for "Forgot your password?" */}
-<Link to="/reset-password" style={{ color: "white" }}>
-        Forgot your password?
-      </Link>
-        
-
+      <Link to="/reset-password" style={{ color: "white" }}>Forgot your password?</Link>
 
       <Button
-         text={loading ? "Loading..." : "Login"}
+        text={loading ? "Loading..." : "Login"}
         onClick={handleLogin}
         disabled={loading}
       />

@@ -1,6 +1,13 @@
 /* Profile.css */
 .profile-container {
     text-align: center;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    align-items:center;
+    justify-content: center;
+    display:block;
+    margin: auto;
   }
   
   .profile-image {
@@ -8,9 +15,32 @@
     height: 150px;
     display: block;
     margin: 0 auto;
+    width: 250px;
+    min-height: 250px;
+    background: linear-gradient(
+      177.7deg,
+      rgba(58, 129, 191, 0.3) 1.63%,
+      rgba(65, 48, 90, 0.009) 148.18%
+    );
+    border-radius: 1rem;
+    padding: 0.5rem;
+    opacity: 0.7;
+    cursor: pointer;
   }
   
   .upload-button {
     margin-top: 10px;
+  }
+
+  .logoutbtn{
+    display: block;
+    margin: auto;
+    /* width: 80%; */
+  }
+
+  .btncontainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   

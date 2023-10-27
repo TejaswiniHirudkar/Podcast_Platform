@@ -11,8 +11,11 @@ const podcastSlice = createSlice({
     setPodcasts: (state, action) => {
       state.podcasts = action.payload;
     },
+    clearPodcasts: (state) => {
+      state.podcasts = [];
+    },
   },
 });
 
-export const { setPodcasts } = podcastSlice.actions;
+export const { setPodcasts, clearPodcasts } = podcastSlice.actions;
 export default podcastSlice.reducer;

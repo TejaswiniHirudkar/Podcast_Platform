@@ -2,24 +2,31 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { auth, storage } from "../firebase";
 import { signOut } from "firebase/auth";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; 
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Loader from "../components/Common/Loader";
 import Header from "../components/Common/Header";
 import Button from "../components/Common/Button";
 import FileInput from "../components/Common/Input/FileInput";
-import { setProfilePicture, clearProfilePicture, selectProfilePicture } from "../slices/profilePictureSlice";
+import {
+  setProfilePicture,
+  clearProfilePicture,
+  selectProfilePicture,
+} from "../slices/profilePictureSlice";
 import { toast } from "react-toastify";
 import UserPodcastGrid from "../components/Podcasts/UserPodcastGrid";
-import "./Profile.css"
+import "./Profile.css";
+import PodcastCard from "../components/Podcasts/PodcastCard";
 
 function Profile() {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const profileImage = useSelector(selectProfilePicture);
-  // const [podcasts, setPodcasts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [uploadButtonText, setUploadButtonText] = useState("Upload Profile Picture"); // Added state for upload button text
   const podcasts = useSelector((state) => state.podcasts.podcasts);
+
+  const [loading, setLoading] = useState(false);
+
+  // Determine the button text based on whether a profile picture exists
+  const uploadButtonText = profileImage ? "Change Profile Picture" : "Upload Profile Picture";
 
   useEffect(() => {
     if (user) {
@@ -53,8 +60,7 @@ function Profile() {
           .then((url) => {
             dispatch(setProfilePicture(url));
             setLoading(false);
-            setUploadButtonText("Change Profile Picture"); // Update the button text
-            toast.success("Profile picture uploaded successfully!");
+            // toast.success("Profile picture uploaded successfully!");
           })
           .catch((error) => {
             setLoading(false);
@@ -69,7 +75,6 @@ function Profile() {
 
   const handleProfileImageChange = () => {
     dispatch(clearProfilePicture());
-    setUploadButtonText("Upload Profile Picture"); // Change the button text
     toast.info("Profile picture changed. Please upload a new one.");
   };
 
@@ -80,33 +85,40 @@ function Profile() {
   return (
     <div className="profile-container">
       <Header />
-      {/* <h1>{user.name}</h1>
-      <h1>{user.email}</h1>
-      <h1>{user.uid}</h1> */}
-        {profileImage && (
-          <div>
-            <img
-              src={profileImage}
-              alt="Profile"
-              className="profile-image"
-            />
-            <button onClick={handleProfileImageChange}>{uploadButtonText}</button>
-          </div>
-        )}
-      {/* </h1> */}
+
+      
+
+
+
+      {profileImage && (
+        <div className="profile-container">
+          <img 
+          src={profileImage} 
+          alt="Profile" 
+          className="profile-image" />
+          {/* <PodcastCard
+          key={user.uid}
+          id={user.uid}
+          title={user.name}
+          displayImage={profileImage}
+        /> */}
+          {/* <Button onClick={handleProfileImageChange}>{uploadButtonText}</Button> */}
+        </div>
+      )}
       {!profileImage && !loading && (
         <div className="upload-button">
           <FileInput
             accept="image/*"
             id="profileImage"
             fileHandleFnc={handleProfileImageUpload}
-            text={uploadButtonText} // Use the uploadButtonText state
+            text={uploadButtonText}
           />
         </div>
       )}
-      <h2>Your Podcasts:</h2>
+      <h2>Your Podcasts</h2>
       <UserPodcastGrid podcasts={podcasts} />
-      <Button text="Logout" onClick={handleLogout} />
+      <div className="btncontainer"><Button text="Logout" onClick={handleLogout} className="logoutbtn"
+       /></div>
     </div>
   );
 }

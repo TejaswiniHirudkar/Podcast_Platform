@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Common/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { setPodcasts } from "../slices/podcastSlice";
 import PodcastCard from "../components/Podcasts/PodcastCard";
@@ -38,6 +38,22 @@ function PodcastsPage() {
     item.title.trim().toLowerCase().includes(search.trim().toLowerCase())
   );
 
+  // Function to fetch creator information
+  const fetchCreatorInfo = async (creatorId) => {
+    try {
+      const creatorDoc = doc(db, "users", creatorId);
+      const creatorSnapshot = await getDoc(creatorDoc);
+      if (creatorSnapshot.exists()) {
+        const creatorData = creatorSnapshot.data();
+        return creatorData.name; // Adjust this based on your user structure
+      }
+      return "Unknown Creator";
+    } catch (error) {
+      console.error("Error fetching creator info:", error);
+      return "Unknown Creator";
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -59,6 +75,7 @@ function PodcastsPage() {
                   id={item.id}
                   title={item.title}
                   displayImage={item.displayImage}
+                  createdBy={fetchCreatorInfo(item.creatorId)} // Include the "created by" information
                 />
               );
             })}
