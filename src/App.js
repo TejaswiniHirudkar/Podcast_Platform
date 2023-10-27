@@ -15,6 +15,7 @@ import CreateAPodcastPage from './pages/CreateAPodcast';
 import PodcastsPage from './pages/Podcasts';
 import PodcastDetailsPage from './pages/PodcastDetails';
 import CreateAnEpisodePage from './pages/CreateAnEpisode';
+import ResetPassword from './components/SignupComponents/ResetPassword';
 
 
 
@@ -61,13 +62,12 @@ function App() {
           <Route path='/' element = {<SignUpPage/>}/>
           <Route element={<PrivateRoutes/>}>
           <Route path='/profile' element = {<Profile/>}/>
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path='/create-a-podcast' element = {<CreateAPodcastPage/>}/>
           <Route path="/podcasts" element={<PodcastsPage />} />
           <Route path="/podcast/:id" element={<PodcastDetailsPage />} />
-          <Route
-              path="/podcast/:id/create-episode"
-              element={<CreateAnEpisodePage />}
-            />
+          <Route path="/podcast/:id/create-episode" element={<CreateAnEpisodePage />}
+/>
           </Route> 
         </Routes>
       </Router>

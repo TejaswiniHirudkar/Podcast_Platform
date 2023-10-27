@@ -5,9 +5,10 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../../../slices/userSlice";
 import { toast } from "react-toastify";
+import ResetPassword from "../ResetPassword";
 
 
 function LoginForm() {
@@ -16,6 +17,7 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   
 
   const handleLogin = async() => {
@@ -73,6 +75,23 @@ function LoginForm() {
         type="password"
         required={true}
       />
+
+      
+
+    
+
+
+
+{/* <Link to="/reset-password" style={{ color: "white" }}>Forgot your password?</Link> */}
+
+
+
+{/* Step 2: Add Link component for "Forgot your password?" */}
+<Link to="/reset-password" style={{ color: "white" }}>
+        Forgot your password?
+      </Link>
+        
+
 
       <Button
          text={loading ? "Loading..." : "Login"}
