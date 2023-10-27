@@ -60,9 +60,9 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element = {<SignUpPage/>}/>
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route element={<PrivateRoutes/>}>
           <Route path='/profile' element = {<Profile/>}/>
-          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path='/create-a-podcast' element = {<CreateAPodcastPage/>}/>
           <Route path="/podcasts" element={<PodcastsPage />} />
           <Route path="/podcast/:id" element={<PodcastDetailsPage />} />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import InputComponent from '../../Common/Input';
 import Button from '../../Common/Button';
-import { auth } from '../../../firebase';
+import { auth } from '../../../firebase'; // Make sure you import the auth object correctly
 import { toast } from 'react-toastify';
 
 function ResetPassword() {
@@ -12,7 +12,8 @@ function ResetPassword() {
     setLoading(true);
 
     try {
-      await auth.sendPasswordResetEmail(email);
+      // Send the password reset email using Firebase auth object
+      await auth().sendPasswordResetEmail(email);
       toast.success('Password reset email sent. Please check your inbox.');
     } catch (error) {
       console.error('Error sending password reset email:', error);
