@@ -12,6 +12,19 @@ function PodcastsPage() {
   const podcasts = useSelector((state) => state.podcasts.podcasts);
   const [search, setSearch] = useState("");
 
+
+  const user = useSelector((state) => state.user.user);
+
+  var name='';
+  if(!user){
+    name=user.name;
+  }
+  else{
+    name="unknown user";
+  }
+
+
+
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, "podcasts")),
@@ -38,22 +51,6 @@ function PodcastsPage() {
     item.title.trim().toLowerCase().includes(search.trim().toLowerCase())
   );
 
-  // Function to fetch creator information
-  const fetchCreatorInfo = async (creatorId) => {
-    try {
-      const creatorDoc = doc(db, "users", creatorId);
-      const creatorSnapshot = await getDoc(creatorDoc);
-      if (creatorSnapshot.exists()) {
-        const creatorData = creatorSnapshot.data();
-        return creatorData.name; // Adjust this based on your user structure
-      }
-      return "Unknown Creator";
-    } catch (error) {
-      console.error("Error fetching creator info:", error);
-      return "Unknown Creator";
-    }
-  };
-
   return (
     <div>
       <Header />
@@ -75,7 +72,9 @@ function PodcastsPage() {
                   id={item.id}
                   title={item.title}
                   displayImage={item.displayImage}
-                  createdBy={fetchCreatorInfo(item.creatorId)} // Include the "created by" information
+                  // createdBy={fetchCreatorInfo(item.creatorId)} // Include the "created by" information
+                  createdBy={name}
+                  
                 />
               );
             })}

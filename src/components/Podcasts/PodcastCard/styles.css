@@ -29,4 +29,10 @@
     text-decoration: none !important;
     margin: 0.5rem 0rem;
   }
+
+  .createdBy-podcast{
+    color: var(--white) !important;
+    text-decoration: none !important;
+    margin: 0.5rem 0rem;
+  }
   
