@@ -16,7 +16,7 @@ function PodcastsPage() {
   const user = useSelector((state) => state.user.user);
 
   var name='';
-  if(!user){
+  if(user){
     name=user.name;
   }
   else{
